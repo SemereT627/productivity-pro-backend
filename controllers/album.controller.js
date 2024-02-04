@@ -65,6 +65,9 @@ const deleteAlbum = catchAsync(async (req, res) => {
  *         name:
  *           type: string
  *           description: The name of the album
+ *         artist:
+ *           type: string
+ *           description: The artist of the album
  *         releaseDate:
  *           type: string
  *           format: date

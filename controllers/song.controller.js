@@ -56,7 +56,6 @@ const deleteSong = catchAsync(async (req, res) => {
  *       type: object
  *       required:
  *         - title
- *         - artist
  *         - album
  *         - genre
  *       properties:
@@ -67,9 +66,6 @@ const deleteSong = catchAsync(async (req, res) => {
  *         title:
  *           type: string
  *           description: The title of the song
- *         artist:
- *           type: string
- *           description: The artist of the song
  *         album:
  *           type: string
  *           description: The album of the song
