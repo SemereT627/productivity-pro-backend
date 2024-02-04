@@ -1,14 +1,14 @@
 const { Router } = require("express");
-const songRoutes = require("./song.routes");
-const artistRoutes = require("./artist.routes");
-// const albumRoutes = require("./album.routes");
-// const genreRoutes = require("./genre.routes");
+const songRoutes = require("./song.route");
+const artistRoutes = require("./artist.route");
+const albumRoutes = require("./album.route");
+const genreRoutes = require("./genre.route");
 
 const router = Router();
 
 router.use("/songs", songRoutes);
 router.use("/artists", artistRoutes);
-// router.use("/albums", albumRoutes);
-// router.use("/genres", genreRoutes);
+router.use("/albums", albumRoutes);
+router.use("/genres", genreRoutes);
 
 module.exports = router;
