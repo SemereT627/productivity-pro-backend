@@ -3,7 +3,7 @@ const Album = require("../models/album.model");
 
 const getAlbums = catchAsync(async (req, res) => {
   try {
-    const albums = await Album.find();
+    const albums = await Album.find().populate("artist");
     res.status(200).json({ albums });
   } catch (error) {
     res.status(400).json({ error });
@@ -12,7 +12,7 @@ const getAlbums = catchAsync(async (req, res) => {
 
 const getAlbum = catchAsync(async (req, res) => {
   try {
-    const album = await Album.findById(req.params.id);
+    const album = await Album.findById(req.params.id).populate("artist");
     res.status(200).json({ album });
   } catch (error) {
     res.status(400).json({ error });
@@ -22,7 +22,8 @@ const getAlbum = catchAsync(async (req, res) => {
 const createAlbum = catchAsync(async (req, res) => {
   try {
     const album = await Album.create(req.body);
-    res.status(201).json({ album });
+    const albumPopulated = await album.populate("artist");
+    res.status(201).json({ album: albumPopulated });
   } catch (error) {
     res.status(400).json({ error });
   }
@@ -32,7 +33,7 @@ const updateAlbum = catchAsync(async (req, res) => {
   try {
     const album = await Album.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    });
+    }).populate("artist");
     res.status(200).json({ album });
   } catch (error) {
     res.status(400).json({ error });

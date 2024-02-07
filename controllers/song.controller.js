@@ -3,7 +3,17 @@ const Song = require("../models/song.model");
 
 const getSongs = catchAsync(async (req, res) => {
   try {
-    const songs = await Song.find();
+    const songs = await Song.find().populate([
+      {
+        path: "album",
+        select: "title",
+        populate: {
+          path: "artist",
+          select: "name",
+        },
+      },
+      "genre",
+    ]);
     res.status(200).json({ songs });
   } catch (error) {
     res.status(400).json({ error });
@@ -12,7 +22,17 @@ const getSongs = catchAsync(async (req, res) => {
 
 const getSong = catchAsync(async (req, res) => {
   try {
-    const song = Song.findById(req.params.id);
+    const song = Song.findById(req.params.id).populate([
+      {
+        path: "album",
+        select: "title",
+        populate: {
+          path: "artist",
+          select: "name",
+        },
+      },
+      "genre",
+    ]);
     res.status(200).json({ song });
   } catch (error) {
     res.status(400).json({ error });
@@ -22,7 +42,19 @@ const getSong = catchAsync(async (req, res) => {
 const createSong = catchAsync(async (req, res) => {
   try {
     const song = await Song.create(req.body);
-    res.status(201).json({ song });
+    const songPopulated = await song.populate([
+      {
+        path: "album",
+        select: "title",
+        populate: {
+          path: "artist",
+          select: "name",
+        },
+      },
+      "genre",
+    ]);
+
+    res.status(201).json({ song: songPopulated });
   } catch (error) {
     res.status(400).json({ error });
   }
@@ -32,7 +64,17 @@ const updateSong = catchAsync(async (req, res) => {
   try {
     const song = await Song.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    });
+    }).populate([
+      {
+        path: "album",
+        select: "title",
+        populate: {
+          path: "artist",
+          select: "name",
+        },
+      },
+      "genre",
+    ]);
     res.status(200).json({ song });
   } catch (error) {
     res.status(400).json({ error });
