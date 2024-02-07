@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const Genre = require("../models/genre.model");
+const Song = require("../models/song.model");
 
 const getGenres = catchAsync(async (req, res) => {
   try {
@@ -42,6 +43,14 @@ const updateGenre = catchAsync(async (req, res) => {
 const deleteGenre = catchAsync(async (req, res) => {
   try {
     const genreId = req.params.id;
+
+    const songs = await Song.find({ genre: genreId });
+    if (songs.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "The genre has songs, Delete the songs first." });
+    }
+
     await Genre.findByIdAndDelete(genreId);
     res
       .status(200)

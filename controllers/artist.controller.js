@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const Artist = require("../models/artist.model");
+const Album = require("../models/album.model");
 
 const getArtists = catchAsync(async (req, res) => {
   try {
@@ -42,6 +43,14 @@ const updateArtist = catchAsync(async (req, res) => {
 const deleteArtist = catchAsync(async (req, res) => {
   try {
     const artistId = req.params.id;
+
+    const albums = await Album.find({ artist: artistId });
+    if (albums.length > 0) {
+      return res.status(400).json({
+        error: "The artist has albums, Delete the albums first.",
+      });
+    }
+
     await Artist.findByIdAndDelete(artistId);
     res
       .status(200)
