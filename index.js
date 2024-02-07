@@ -8,11 +8,12 @@ const routes = require("./routes");
 const swagger = require("./utils/swagger");
 const morgan = require("morgan");
 const error = require("./middlewares/error");
+const dbConfig = require("./config/db.config");
 
 const app = express();
 
 mongoose
-  .connect(process.env.MONGOOSE_DATABASE_URL, {
+  .connect(dbConfig.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -35,6 +36,14 @@ swagger(app);
 app.use(error.notFound);
 app.use(error.handler);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+app.use("/", (req, res) => {
+  res.status(200).json({
+    message: "Welcome to Test Backend",
+  });
+});
+
+const PORT = process.env.NODE_DOCKER_PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
