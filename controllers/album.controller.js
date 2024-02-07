@@ -42,8 +42,11 @@ const updateAlbum = catchAsync(async (req, res) => {
 
 const deleteAlbum = catchAsync(async (req, res) => {
   try {
-    await Album.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Album deleted successfully" });
+    const albumId = req.params.id;
+    await Album.findByIdAndDelete(albumId);
+    res
+      .status(200)
+      .json({ message: "Album deleted successfully", _id: albumId });
   } catch (error) {
     res.status(400).json({ error });
   }

@@ -41,8 +41,11 @@ const updateArtist = catchAsync(async (req, res) => {
 
 const deleteArtist = catchAsync(async (req, res) => {
   try {
-    await Artist.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Artist deleted successfully" });
+    const artistId = req.params.id;
+    await Artist.findByIdAndDelete(artistId);
+    res
+      .status(200)
+      .json({ message: "Artist deleted successfully", _id: artistId });
   } catch (error) {
     res.status(400).json({ error });
   }

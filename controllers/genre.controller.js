@@ -41,8 +41,11 @@ const updateGenre = catchAsync(async (req, res) => {
 
 const deleteGenre = catchAsync(async (req, res) => {
   try {
-    await Genre.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Genre deleted successfully" });
+    const genreId = req.params.id;
+    await Genre.findByIdAndDelete(genreId);
+    res
+      .status(200)
+      .json({ message: "Genre deleted successfully", _id: genreId });
   } catch (error) {
     res.status(400).json({ error });
   }
