@@ -49,7 +49,7 @@ const deleteAlbum = catchAsync(async (req, res) => {
     if (songs.length > 0) {
       return res
         .status(400)
-        .json({ message: "The album has songs, Delete the songs first." });
+        .json({ error: "The album has songs, Delete the songs first." });
     }
 
     await Album.findByIdAndDelete(albumId);

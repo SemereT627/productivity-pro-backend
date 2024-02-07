@@ -48,7 +48,7 @@ const deleteGenre = catchAsync(async (req, res) => {
     if (songs.length > 0) {
       return res
         .status(400)
-        .json({ message: "The genre has songs, Delete the songs first." });
+        .json({ error: "The genre has songs, Delete the songs first." });
     }
 
     await Genre.findByIdAndDelete(genreId);
