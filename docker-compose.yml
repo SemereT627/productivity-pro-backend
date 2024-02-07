@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     env_file:
       - ./.env
-    ports:
+    expose:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     environment:
       - DB_HOST=mongodb
@@ -30,6 +30,13 @@ services:
       - DB_PORT=$MONGODB_DOCKER_PORT
     stdin_open: true
     tty: true
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - app
 
 volumes:
   db:
